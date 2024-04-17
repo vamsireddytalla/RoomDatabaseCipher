@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity()
                 val name = binding.name.text.toString()
                 val email = binding.email.text.toString()
                 val no = binding.phone.text.toString()
-                val user = User(name=name, email = email, phnNumber = no)
+                val user = User(name=name, email = email, phnNumber = no, age = 0)
                 dao.insert(user)
 
                 binding.name.text.clear()

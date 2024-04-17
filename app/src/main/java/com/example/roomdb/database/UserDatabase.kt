@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.roomdb.dao.UserDao
 import com.example.roomdb.models.User
@@ -13,7 +14,7 @@ import kotlinx.coroutines.launch
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SupportFactory
 
-@Database(entities = [User::class], version = 1)
+@Database(entities = [User::class], version = 2)
 abstract class UserDatabase : RoomDatabase()
 {
 
@@ -39,6 +40,7 @@ abstract class UserDatabase : RoomDatabase()
 
             return Room.databaseBuilder(cxt.applicationContext, UserDatabase::class.java, "truecaller")
                 .addCallback(roomCallback)
+                .addMigrations(MIGRATION_1_2)
                 .openHelperFactory(factory)
                 .build()
         }
@@ -48,6 +50,13 @@ abstract class UserDatabase : RoomDatabase()
             if (userDao.getUserCount() == 0) {
                 populateDatabase(userDao)
             }
+        }
+
+        private val MIGRATION_1_2 = object :Migration(1,2){
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE userData ADD COLUMN age INTEGER DEFAULT 0")
+            }
+
         }
 
 
@@ -71,28 +80,32 @@ abstract class UserDatabase : RoomDatabase()
                     User(
                         name = "shaji",
                         email = "shaji1@gmail.com",
-                        phnNumber = "8885965414"
+                        phnNumber = "8885965414",
+                        age = 0
                     )
                 )
                 userDao.insert(
                     User(
                         name = "vamsi2",
                         email = "shaji2@gmail.com",
-                        phnNumber = "45757575"
+                        phnNumber = "45757575",
+                        age = 0
                     )
                 )
                 userDao.insert(
                     User(
                         name = "shaji3",
                         email = "shaji3@gmail.com",
-                        phnNumber = "545475474757"
+                        phnNumber = "545475474757",
+                        age = 0
                     )
                 )
                 userDao.insert(
                     User(
                         name = "shaji4",
                         email = "shaji4@gmail.com",
-                        phnNumber = "8398958985"
+                        phnNumber = "8398958985",
+                        age = 0
                     )
                 )
             }

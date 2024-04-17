@@ -60,7 +60,6 @@ object SQLCipherUtils {
             val sqlStatement = tempDbOpened.compileStatement("ATTACH DATABASE '$pathe' AS plaintext KEY '';")
 //            sqlStatement.bindString(1,dbFilePath.absolutePath)
             sqlStatement.execute()
-            println("sample data")
 
             tempDbOpened.rawExecSQL("SELECT sqlcipher_export('main', 'plaintext')");
             tempDbOpened.rawExecSQL("DETACH DATABASE plaintext");
