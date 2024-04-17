@@ -22,6 +22,9 @@ interface UserDao
     @Query("SELECT * FROM userData WHERE name LIKE :search OR email LIKE :search OR phnNumber LIKE :search")
     fun makeQuery(search: String): List<User>
 
+    @Query("Select * from userData")
+    fun getUsersList() : List<User>
+
 
     @Query("SELECT COUNT(*) FROM userData")
     fun getUserCount(): Int

@@ -11,20 +11,45 @@
 
     <EditText
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/et1"/>
+        android:layout_height="45dp"
+        android:hint="Name"
+        android:padding="5dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/et_bg"
+        android:id="@+id/name"/>
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="45dp"
+        android:hint="Email"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        android:background="@drawable/et_bg"
+        android:id="@+id/email"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:id="@+id/b1"
-        android:text="Search"/>
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="45dp"
+        android:hint="Phone No"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        android:background="@drawable/et_bg"
+        android:id="@+id/phone"/>
 
-    <TextView
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginTop="30dp"
+       android:gravity="center">
+       <Button
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:id="@+id/b2"
+           android:text="Add"/>
+   </LinearLayout>
+    <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:id="@+id/result"/>
+        android:id="@+id/list"/>
 
 </LinearLayout>

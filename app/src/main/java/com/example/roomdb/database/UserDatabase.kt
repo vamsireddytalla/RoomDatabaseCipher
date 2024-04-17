@@ -28,11 +28,18 @@ abstract class UserDatabase : RoomDatabase()
         }
 
         private fun buildDatabase(cxt: Context): UserDatabase {
+
             val byteArray = SQLiteDatabase.getBytes("vamsi".toCharArray())
             val factory = SupportFactory(byteArray)
+            val state = SQLCipherUtils.getDatabaseState(ctx = cxt,"truecaller")
+
+            if(state==SQLCipherUtils.State.UNENCRYPTED){
+                SQLCipherUtils.encrypt(cxt,"truecaller","vamsi".toCharArray())
+            }
+
             return Room.databaseBuilder(cxt.applicationContext, UserDatabase::class.java, "truecaller")
-                .fallbackToDestructiveMigration()
                 .addCallback(roomCallback)
+                .openHelperFactory(factory)
                 .build()
         }
 
@@ -62,30 +69,30 @@ abstract class UserDatabase : RoomDatabase()
             if (userDao.getUserCount() == 0) {
                 userDao.insert(
                     User(
-                        name = "vamsi",
-                        email = "vamsip140@gmail.com",
+                        name = "shaji",
+                        email = "shaji1@gmail.com",
                         phnNumber = "8885965414"
                     )
                 )
                 userDao.insert(
                     User(
                         name = "vamsi2",
-                        email = "vamsip141@gmail.com",
-                        phnNumber = "8885965415"
+                        email = "shaji2@gmail.com",
+                        phnNumber = "45757575"
                     )
                 )
                 userDao.insert(
                     User(
-                        name = "vamsi3",
-                        email = "vamsip142@gmail.com",
-                        phnNumber = "8885965416"
+                        name = "shaji3",
+                        email = "shaji3@gmail.com",
+                        phnNumber = "545475474757"
                     )
                 )
                 userDao.insert(
                     User(
-                        name = "vamsi4",
-                        email = "vamsip143@gmail.com",
-                        phnNumber = "8885965417"
+                        name = "shaji4",
+                        email = "shaji4@gmail.com",
+                        phnNumber = "8398958985"
                     )
                 )
             }

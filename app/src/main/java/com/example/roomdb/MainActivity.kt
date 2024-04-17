@@ -2,8 +2,11 @@ package com.example.roomdb
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.ArrayAdapter
 import androidx.lifecycle.lifecycleScope
 import com.example.roomdb.dao.UserDao
+import com.example.roomdb.database.SQLCipherUtils
 import com.example.roomdb.database.UserDatabase
 import com.example.roomdb.databinding.ActivityMainBinding
 import com.example.roomdb.models.User
@@ -12,7 +15,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.sqlcipher.database.SQLiteDatabase
-
+private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity()
 {
 
@@ -21,31 +24,45 @@ class MainActivity : AppCompatActivity()
     lateinit var dao: UserDao
 
 
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 //        SQLiteDatabase.loadLibs(this)
+
         database = UserDatabase.getInstance(this)
-        dao = database.userDao();
+        dao = database.userDao()
 
 
-        binding.b1.setOnClickListener {
+        refreshData()
+        binding.b2.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
-                val searchedText = binding.et1.text.toString().trim()
-                val userList: List<User> = dao.makeQuery(searchedText)
+                val name = binding.name.text.toString()
+                val email = binding.email.text.toString()
+                val no = binding.phone.text.toString()
+                val user = User(name=name, email = email, phnNumber = no)
+                dao.insert(user)
 
-                withContext(Dispatchers.Main) {
-                    println(userList.toString())
-                    if (userList.isNotEmpty()) {
-                        binding.result.text = userList[0].toString()
-                    }
-                }
+                binding.name.text.clear()
+                binding.email.text.clear()
+                binding.phone.text.clear()
+                refreshData()
             }
-
         }
 
+    }
+
+    fun refreshData(){
+        lifecycleScope.launch(Dispatchers.IO) {
+            val list = dao.getUsersList()
+            withContext(Dispatchers.Main){
+                val adapter = ArrayAdapter(this@MainActivity, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                    list.map { it.name.toString()+"\n"+it.phnNumber.toString()+"\n"+it.email.toString() })
+                binding.list.adapter = adapter
+            }
+        }
     }
 
 }
